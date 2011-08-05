@@ -25,17 +25,22 @@ import eu.interedition.collatex2.interfaces.IWitness;
 
 public class VariantGraphAligner implements IAligner {
   private final IVariantGraph graph;
+  private final ILinker tokenLinker;
   private Analysis analysis;
 
   public VariantGraphAligner(IVariantGraph graph) {
+    this(graph, new TokenLinker());
+  }
+
+  public VariantGraphAligner(IVariantGraph graph, ILinker tokenLinker) {
     this.graph = graph;
+    this.tokenLinker = tokenLinker;
   }
 
   public void addWitness(IWitness witness) {
     // 1. Do the matching and linking of tokens
     //TODO: the TokenLinker class should be replaced by the new linker class
     //TODO: based on the decision graph
-    TokenLinker tokenLinker = new TokenLinker();
     Map<INormalizedToken, INormalizedToken> linkedTokens = linkTheTokens(witness, tokenLinker);
     // 2. Determine sequences
     SuperbaseCreator creator = new SuperbaseCreator();

@@ -29,12 +29,14 @@ import eu.interedition.collatex2.implementation.input.tokenization.WhitespaceTok
 import eu.interedition.collatex2.implementation.output.apparatus.ParallelSegmentationApparatus;
 import eu.interedition.collatex2.implementation.output.table.RankedGraphBasedAlignmentTable;
 import eu.interedition.collatex2.implementation.vg_alignment.IAlignment2;
+import eu.interedition.collatex2.implementation.vg_alignment.TokenLinker;
 import eu.interedition.collatex2.implementation.vg_alignment.VariantGraphAligner;
 import eu.interedition.collatex2.implementation.vg_analysis.Analyzer;
 import eu.interedition.collatex2.implementation.vg_analysis.IAnalysis;
 import eu.interedition.collatex2.interfaces.IAligner;
 import eu.interedition.collatex2.interfaces.IAlignmentTable;
 import eu.interedition.collatex2.interfaces.IApparatus;
+import eu.interedition.collatex2.interfaces.ILinker;
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IPhrase;
 import eu.interedition.collatex2.interfaces.ITokenNormalizer;
@@ -57,6 +59,7 @@ public class CollateXEngine {
   private ITokenizer tokenizer = new WhitespaceTokenizer();
   // private ITokenizer tokenizer = new WhitespaceAndPunctuationTokenizer();
   private ITokenNormalizer tokenNormalizer = new DefaultTokenNormalizer();
+  private ILinker tokenLinker = new TokenLinker();
 
   public void setTokenizer(ITokenizer tokenizer) {
     this.tokenizer = tokenizer;
@@ -64,6 +67,10 @@ public class CollateXEngine {
 
   public void setTokenNormalizer(ITokenNormalizer tokenNormalizer) {
     this.tokenNormalizer = tokenNormalizer;
+  }
+  
+  public void setTokenLinker(ILinker tokenLinker) {
+    this.tokenLinker = tokenLinker;
   }
 
 
@@ -85,8 +92,7 @@ public class CollateXEngine {
   }
 
   public IAligner createAligner(IVariantGraph graph) {
-    // return new VariantGraphAligner(graph);
-    return new VariantGraphAligner(graph);
+    return new VariantGraphAligner(graph, tokenLinker);
   }
 
   /**
