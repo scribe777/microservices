@@ -41,6 +41,8 @@ import org.w3c.dom.NodeList;
 import com.google.common.collect.Lists;
 
 import eu.interedition.collatex2.implementation.CollateXEngine;
+import eu.interedition.collatex2.implementation.decision_graph.NewLinker;
+import eu.interedition.collatex2.implementation.vg_alignment.TokenLinker;
 import eu.interedition.collatex2.interfaces.IAlignmentTable;
 import eu.interedition.collatex2.interfaces.IApparatus;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
@@ -60,10 +62,13 @@ public class ExamplesController implements InitializingBean {
   
   @RequestMapping("usecases")
   public ModelAndView collateUseCases() {
+    //TODO: TEMPORARY SOLUTION! NOT MULTITHREADING AWARE!
+    engine.setTokenLinker(new NewLinker());
     List<IAlignmentTable> alignments = Lists.newArrayListWithCapacity(usecases.size());
     for (IWitness[] example : usecases) {
       alignments.add(engine.align(example));
     }
+    engine.setTokenLinker(new TokenLinker());
     return new ModelAndView("examples/usecases", "examples", alignments);
   }
 

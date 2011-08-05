@@ -7,7 +7,7 @@
         <witness>The black very special cat</witness>
         <witness>The black not very special cat</witness>
     </example>
-    <example>
+<!--     <example>
         <witness>The black dog chases a red cat.</witness>
         <witness>A red cat chases the black dog.</witness>
         <witness>A red cat chases the yellow dog</witness>
@@ -22,7 +22,7 @@
         <witness>the black saw the black cat on the table</witness>
         <witness>the black saw the black cat on the table</witness>
     </example>
-    <example>
+	<example>
         <witness>the black cat sat on the mat</witness>
         <witness>the cat sat on the black mat</witness>
         <witness>the cat sat on the black mat</witness>
@@ -117,5 +117,5 @@
     <example>
         <witness>I bought this glass, because it matches those dinner plates.</witness>
         <witness>I bought those glasses.</witness>
-    </example>  
+    </example>  --> 
 </examples>
