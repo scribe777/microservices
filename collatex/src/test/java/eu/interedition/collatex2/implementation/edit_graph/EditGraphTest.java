@@ -1,8 +1,8 @@
-package eu.interedition.collatex2.decision_graph;
+package eu.interedition.collatex2.implementation.edit_graph;
 
 
 
-public class DecisionGraphTest {
+public class EditGraphTest {
 
   
   //  the -> The

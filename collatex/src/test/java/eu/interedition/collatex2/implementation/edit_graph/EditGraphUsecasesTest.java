@@ -1,4 +1,4 @@
-package eu.interedition.collatex2.decision_graph;
+package eu.interedition.collatex2.implementation.edit_graph;
 
 import static org.junit.Assert.assertEquals;
 
@@ -8,12 +8,12 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.interedition.collatex2.implementation.CollateXEngine;
-import eu.interedition.collatex2.implementation.decision_graph.NewLinker;
+import eu.interedition.collatex2.implementation.edit_graph.EditGraphLinker;
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
 import eu.interedition.collatex2.interfaces.IWitness;
 
-public class DecisionGraphUsecasesTest {
+public class EditGraphUsecasesTest {
 //  <example>
 //  <witness>The black cat</witness>
 //  <witness>The black and white cat</witness>
@@ -28,7 +28,7 @@ public class DecisionGraphUsecasesTest {
     IWitness a = engine.createWitness("A", "The black cat");
     IWitness b = engine.createWitness("B", "The black and white cat");
     IVariantGraph graph = engine.graph(a);
-    NewLinker linker = new NewLinker();
+    EditGraphLinker linker = new EditGraphLinker();
     Map<INormalizedToken, INormalizedToken> link = linker.link(graph, b);
     assertEquals(3, link.size());
     //TODO: add asserts!
@@ -49,7 +49,7 @@ public class DecisionGraphUsecasesTest {
     IWitness b = engine.createWitness("B", "A red cat chases the black dog.");
     IWitness c = engine.createWitness("C", "A red cat chases the yellow dog");
     IVariantGraph graph = engine.graph(a, b);
-    NewLinker linker = new NewLinker();
+    EditGraphLinker linker = new EditGraphLinker();
     Map<INormalizedToken, INormalizedToken> link = linker.link(graph, c);
     
     

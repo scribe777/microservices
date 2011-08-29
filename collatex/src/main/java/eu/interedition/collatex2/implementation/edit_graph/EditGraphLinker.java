@@ -1,4 +1,4 @@
-package eu.interedition.collatex2.implementation.decision_graph;
+package eu.interedition.collatex2.implementation.edit_graph;
 
 import java.util.Iterator;
 import java.util.List;
@@ -12,20 +12,20 @@ import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
 import eu.interedition.collatex2.interfaces.IWitness;
 
-public class NewLinker implements ILinker {
+public class EditGraphLinker implements ILinker {
   
   public Map<INormalizedToken, INormalizedToken> link(IVariantGraph vGraph, IWitness b) {
     VariantGraphMatcher vgmatcher = new VariantGraphMatcher();
-    DecisionGraphCreator creator2 = new DecisionGraphCreator(vgmatcher, vGraph, b);
-    DecisionGraph dGraph = creator2.buildDecisionGraph();
+    EditGraphCreator creator2 = new EditGraphCreator(vgmatcher, vGraph, b);
+    EditGraph dGraph = creator2.buildEditGraph();
     // System.out.println(dGraph.vertexSet());
-    DecisionGraphVisitor visitor = new DecisionGraphVisitor(dGraph);
-    List<DGEdge> shortestPath = visitor.getShortestPath();
+    EditGraphVisitor visitor = new EditGraphVisitor(dGraph);
+    List<EditGraphEdge> shortestPath = visitor.getShortestPath();
     if (shortestPath.size()==0) {
       throw new RuntimeException("ERROR: shortest path is empty!");
     }
     // System.out.println(shortestPath.size());
-    Iterator<DGEdge> edges = shortestPath.iterator();
+    Iterator<EditGraphEdge> edges = shortestPath.iterator();
 //    for (DGEdge edge : shortestPath) {
 //      System.out.println(edge.getTargetVertex().toString());
 //    }
@@ -35,7 +35,7 @@ public class NewLinker implements ILinker {
     List<INormalizedToken> tokens = b.getTokens();
     for (INormalizedToken token : tokens) {
       if (matches.containsKey(token)) {
-        DGEdge edge = edges.next();
+        EditGraphEdge edge = edges.next();
         linkedTokens.put(token, edge.getTargetVertex().getToken());
       }
     }

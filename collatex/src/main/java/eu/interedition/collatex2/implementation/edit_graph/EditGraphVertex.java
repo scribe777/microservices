@@ -1,12 +1,12 @@
-package eu.interedition.collatex2.implementation.decision_graph;
+package eu.interedition.collatex2.implementation.edit_graph;
 
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 
-public class DGVertex {
+public class EditGraphVertex {
 
   private final INormalizedToken normalizedToken;
 
-  public DGVertex(INormalizedToken normalizedToken) {
+  public EditGraphVertex(INormalizedToken normalizedToken) {
     this.normalizedToken = normalizedToken;
   }
 
