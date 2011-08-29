@@ -18,8 +18,13 @@ public class NewLinker implements ILinker {
     VariantGraphMatcher vgmatcher = new VariantGraphMatcher();
     DecisionGraphCreator creator2 = new DecisionGraphCreator(vgmatcher, vGraph, b);
     DecisionGraph dGraph = creator2.buildDecisionGraph();
+    // System.out.println(dGraph.vertexSet());
     DecisionGraphVisitor visitor = new DecisionGraphVisitor(dGraph);
     List<DGEdge> shortestPath = visitor.getShortestPath();
+    if (shortestPath.size()==0) {
+      throw new RuntimeException("ERROR: shortest path is empty!");
+    }
+    // System.out.println(shortestPath.size());
     Iterator<DGEdge> edges = shortestPath.iterator();
 //    for (DGEdge edge : shortestPath) {
 //      System.out.println(edge.getTargetVertex().toString());

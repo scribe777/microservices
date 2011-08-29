@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.interedition.collatex2.implementation.CollateXEngine;
@@ -32,5 +33,25 @@ public class DecisionGraphUsecasesTest {
     assertEquals(3, link.size());
     //TODO: add asserts!
     //System.out.println(link);
+  }
+  
+//  <example>
+//  <witness>The black dog chases a red cat.</witness>
+//  <witness>A red cat chases the black dog.</witness>
+//  <witness>A red cat chases the yellow dog</witness> 
+//</example>
+
+  @Ignore
+  @Test
+  public void testUsecase2() {
+    CollateXEngine engine = new CollateXEngine();
+    IWitness a = engine.createWitness("A", "The black dog chases a red cat.");
+    IWitness b = engine.createWitness("B", "A red cat chases the black dog.");
+    IWitness c = engine.createWitness("C", "A red cat chases the yellow dog");
+    IVariantGraph graph = engine.graph(a, b);
+    NewLinker linker = new NewLinker();
+    Map<INormalizedToken, INormalizedToken> link = linker.link(graph, c);
+    
+    
   }
 }

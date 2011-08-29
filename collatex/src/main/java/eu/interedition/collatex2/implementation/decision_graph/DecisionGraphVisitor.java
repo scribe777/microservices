@@ -26,9 +26,14 @@ public class DecisionGraphVisitor {
   public List<DGEdge> getShortestPath() {
     Map<DGVertex, Integer> determineMinSequences = determineMinSequences(dGraph);
     int minSequences = determineMinSequences.get(dGraph.getStartVertex());
+    // System.out.println("Minimum number of sequences: "+minSequences);
+    // System.out.println(determineMinSequences);
     DecisionGraph graphWithSinglePath = buildNewGraphWithOnlyMinimumWeightVertices(determineMinSequences, minSequences);
     DGVertex currentVertex = graphWithSinglePath.getStartVertex();
     List<DGEdge> shortestPath = Lists.newArrayList();
+    if (graphWithSinglePath.outDegreeOf(currentVertex) != 1) {
+      throw new RuntimeException("ERROR: "+currentVertex+" has "+graphWithSinglePath.outDegreeOf(currentVertex)+ " choice(s)!");
+    }
     while (graphWithSinglePath.outDegreeOf(currentVertex) == 1) {
       DGEdge edge = graphWithSinglePath.outgoingEdgesOf(currentVertex).iterator().next();
       shortestPath.add(edge);
