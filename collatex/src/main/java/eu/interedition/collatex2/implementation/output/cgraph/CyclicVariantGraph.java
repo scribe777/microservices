@@ -20,6 +20,7 @@
 
 package eu.interedition.collatex2.implementation.output.cgraph;
 
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -44,9 +45,9 @@ public class CyclicVariantGraph extends SimpleDirectedGraph<IVariantGraphVertex,
 
   private CyclicVariantGraph() {
     super(IVariantGraphEdge.class);
-    startVertex = new VariantGraphVertex("#", null);
+    startVertex = new VariantGraphVertex(this, "#", null);
     addVertex(startVertex);
-    endVertex = new VariantGraphVertex("#", null);
+    endVertex = new VariantGraphVertex(this, "#", null);
     addVertex(endVertex);
   }
 
@@ -73,7 +74,7 @@ public class CyclicVariantGraph extends SimpleDirectedGraph<IVariantGraphVertex,
 
   //write
   public IVariantGraphVertex addNewVertex(String normalized, INormalizedToken vertexKey) {
-    final VariantGraphVertex vertex = new VariantGraphVertex(normalized, vertexKey);
+    final VariantGraphVertex vertex = new VariantGraphVertex(this, normalized, vertexKey);
     addVertex(vertex);
     return vertex;
   }
@@ -133,6 +134,11 @@ public class CyclicVariantGraph extends SimpleDirectedGraph<IVariantGraphVertex,
   @Override
   public Map<IVariantGraphVertex, IVariantGraphVertex> getTransposedTokens() {
 	  throw new UnsupportedOperationException("Cyclic graphs have no transpositions");
+  }
+
+  @Override
+  public Comparator<IVariantGraphVertex> getComparator() {
+    throw new UnsupportedOperationException();
   }
 
 }

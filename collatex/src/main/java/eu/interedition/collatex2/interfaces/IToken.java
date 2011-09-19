@@ -24,7 +24,7 @@ package eu.interedition.collatex2.interfaces;
  * The basic Token interface. The smallest piece of the text to align. It has the minimal number of fields: content 
  * 
  */
-public interface IToken {
+public interface IToken extends Comparable<IToken>{
 
 /**
  * The content stream token text
@@ -32,6 +32,7 @@ public interface IToken {
  */
   String getContent();
 
-String getTrailingWhitespace();
+  //TODO: to be discussed!
+  String getTrailingWhitespace();
 
 }

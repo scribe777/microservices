@@ -51,11 +51,11 @@ public class CVariantGraphCreator {
         	if(a2cVertexMap.containsKey(txpVertex)) {
         		cvgVertex = a2cVertexMap.get(txpVertex);
         	} else {
-        		cvgVertex = new VariantGraphVertex(txpVertex.getNormalized(), txpVertex.getVertexKey());
+        		cvgVertex = new VariantGraphVertex(cyclicGraph, txpVertex.getNormalized(), txpVertex.getVertexKey());
         		cyclicGraph.addVertex(cvgVertex);
         	}
         } else {
-          cvgVertex = new VariantGraphVertex(avgVertex.getNormalized(), avgVertex.getVertexKey());
+          cvgVertex = new VariantGraphVertex(cyclicGraph, avgVertex.getNormalized(), avgVertex.getVertexKey());
           cyclicGraph.addVertex(cvgVertex);
         }
         a2cVertexMap.put(avgVertex, cvgVertex);

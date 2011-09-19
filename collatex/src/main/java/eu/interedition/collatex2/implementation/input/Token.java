@@ -79,4 +79,9 @@ public class Token implements IToken {
   public String toString() {
     return content;
   }
+
+  @Override
+  public int compareTo(IToken o) {
+    throw new RuntimeException("This method should have been overwritten in container specific implementation!");
+  }
 }

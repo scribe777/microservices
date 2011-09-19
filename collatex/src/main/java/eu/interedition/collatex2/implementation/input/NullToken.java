@@ -21,6 +21,7 @@
 package eu.interedition.collatex2.implementation.input;
 
 import eu.interedition.collatex2.interfaces.INormalizedToken;
+import eu.interedition.collatex2.interfaces.IToken;
 
 public class NullToken implements INormalizedToken {
 
@@ -37,5 +38,10 @@ public class NullToken implements INormalizedToken {
   @Override
   public String getTrailingWhitespace() {
     return "";
+  }
+
+  @Override
+  public int compareTo(IToken o) {
+    return 0;
   }
 }

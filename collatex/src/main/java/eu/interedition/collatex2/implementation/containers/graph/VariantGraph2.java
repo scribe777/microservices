@@ -52,9 +52,9 @@ public class VariantGraph2 extends DirectedAcyclicGraph<IVariantGraphVertex, IVa
 
   public VariantGraph2() {
     super(IVariantGraphEdge.class);
-    startVertex = new VariantGraphVertex("#", null);
+    startVertex = new VariantGraphVertex(this, "#", null);
     addVertex(startVertex);
-    endVertex = new VariantGraphVertex("#", null);
+    endVertex = new VariantGraphVertex(this, "#", null);
     addVertex(endVertex);
   }
 
@@ -188,4 +188,13 @@ public class VariantGraph2 extends DirectedAcyclicGraph<IVariantGraphVertex, IVa
 	  return transposedNodes;
   }
 
+//  public int getTopoligicalOrder(IVariantGraphVertex vertex) {
+//    super.
+//    return -1;
+//  }
+
+  @Override
+  public Comparator<IVariantGraphVertex> getComparator() {
+    return super.topoComparator;
+  }
 }

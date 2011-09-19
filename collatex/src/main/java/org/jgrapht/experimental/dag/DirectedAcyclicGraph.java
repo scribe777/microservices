@@ -87,7 +87,8 @@ public class DirectedAcyclicGraph<V, E> extends SimpleDirectedGraph<V, E> {
 
   //~ Instance fields --------------------------------------------------------
 
-  private TopoComparator<V> topoComparator;
+  //WARNING: CHANGED BY RHD!
+  public TopoComparator<V> topoComparator;
 
   private TopoOrderMapping<V> topoOrderMap;
 

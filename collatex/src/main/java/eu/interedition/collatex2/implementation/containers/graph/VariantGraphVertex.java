@@ -20,12 +20,15 @@
 
 package eu.interedition.collatex2.implementation.containers.graph;
 
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 
 import com.google.common.collect.Maps;
 
 import eu.interedition.collatex2.interfaces.INormalizedToken;
+import eu.interedition.collatex2.interfaces.IToken;
+import eu.interedition.collatex2.interfaces.IVariantGraph;
 import eu.interedition.collatex2.interfaces.IVariantGraphVertex;
 import eu.interedition.collatex2.interfaces.IWitness;
 
@@ -33,11 +36,13 @@ public class VariantGraphVertex implements IVariantGraphVertex {
   private final String normalized;
   private final Map<IWitness, INormalizedToken> tokenMap;
   private final INormalizedToken vertexKey;
+  private final IVariantGraph graph;
 
-  public VariantGraphVertex(String normalized, INormalizedToken vertexKey) {
+  public VariantGraphVertex(IVariantGraph graph, String normalized, INormalizedToken vertexKey) {
     this.normalized = normalized;
     this.vertexKey = vertexKey;
     this.tokenMap = Maps.newLinkedHashMap();
+    this.graph = graph;
   }
 
   @Override
@@ -85,6 +90,17 @@ public class VariantGraphVertex implements IVariantGraphVertex {
   @Override
   public String getTrailingWhitespace() {
     throw new RuntimeException("Do not call this method! Call getToken(IWitness).getTrailingWhitespace() instead.");
+  }
+
+  //TODO: add test!
+  @Override
+  public int compareTo(IToken o) {
+    if (!(o instanceof VariantGraphVertex)) {
+      throw new RuntimeException("Can't compare a non VariantGraphVertexToken to a VariantGraphVertexToken!");
+    }
+    IVariantGraphVertex otherVertex = (IVariantGraphVertex) o;
+    Comparator<IVariantGraphVertex> comparator = graph.getComparator();
+    return comparator.compare(this, otherVertex);
   }
 
 }

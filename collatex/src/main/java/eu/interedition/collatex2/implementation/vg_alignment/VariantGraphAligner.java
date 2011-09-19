@@ -84,7 +84,7 @@ public class VariantGraphAligner implements IAligner {
   //write
   private IVariantGraphVertex addNewVertex(String normalized, INormalizedToken vertexKey) {
     // System.out.println("Add vertex "+normalized);
-    IVariantGraphVertex vertex = new VariantGraphVertex(normalized, vertexKey);
+    IVariantGraphVertex vertex = new VariantGraphVertex(graph, normalized, vertexKey);
     graph.addVertex(vertex);
     return vertex;
   }
