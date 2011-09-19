@@ -4,18 +4,18 @@ import eu.interedition.collatex2.interfaces.INormalizedToken;
 
 public class EditGraphVertex {
 
-  private final INormalizedToken normalizedToken;
+  private final INormalizedToken baseToken;
 
-  public EditGraphVertex(INormalizedToken normalizedToken) {
-    this.normalizedToken = normalizedToken;
+  public EditGraphVertex(INormalizedToken witnessToken, INormalizedToken baseToken) {
+    this.baseToken = baseToken;
   }
 
-  public INormalizedToken getToken() {
-    return normalizedToken;
+  public INormalizedToken getBaseToken() {
+    return baseToken;
   }
 
   @Override
   public String toString() {
-    return normalizedToken.toString();
+    return baseToken.toString();
   }
 }

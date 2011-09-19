@@ -1,9 +1,11 @@
 package eu.interedition.collatex2.implementation.edit_graph;
 
+import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Iterator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.interedition.collatex2.implementation.CollateXEngine;
@@ -17,6 +19,37 @@ import eu.interedition.collatex2.interfaces.IWitness;
 
 public class EditGraphCreatorTest {
 
+  @Ignore
+  @Test
+  public void testExample1Mockito() {
+    CollateXEngine engine = new CollateXEngine();
+    IWitness a = engine.createWitness("a", "The red cat and the black cat");
+    IWitness b = engine.createWitness("b", "The red cat and the black cat");
+    IVariantGraph vGraph = engine.graph(a);
+    VariantGraphMatcher matcher = new VariantGraphMatcher();
+    
+    //mock
+    EditGraph editGraph = mock(EditGraph.class);
+    EditGraphVertex startVertex = new EditGraphVertex(null, vGraph.getStartVertex());
+    when(editGraph.getStartVertex()).thenReturn(startVertex);
+    
+    //run
+    EditGraphCreator creator = new EditGraphCreator(editGraph, matcher, vGraph, b);
+    creator.buildEditGraph();
+    verify(editGraph).getStartVertex();
+    verifyNoMoreInteractions(editGraph);
+    
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
   //TODO: add a test where there is sometimes no match for a given token
   
   // All the witness are equal

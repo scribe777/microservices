@@ -14,18 +14,23 @@ public class EditGraphCreator {
   private final IVariantGraphMatcher matcher;
   private final IVariantGraph vGraph;
   private final IWitness b;
+  private final EditGraph dGraph;
+
+  public EditGraphCreator(IVariantGraphMatcher matcher, IVariantGraph vGraph, IWitness b) {
+    this(new EditGraph(vGraph.getStartVertex()), matcher, vGraph, b);
+  }
 
   //remove second and third parameter or the first one alone!
-  public EditGraphCreator(IVariantGraphMatcher matcher, IVariantGraph vGraph, IWitness b) {
-    this.matcher = matcher;
-    this.vGraph = vGraph;
-    this.b = b;
+  public EditGraphCreator(EditGraph editGraph, IVariantGraphMatcher matcher2, IVariantGraph vGraph2, IWitness b2) {
+    this.dGraph = editGraph;
+    this.matcher = matcher2;
+    this.vGraph = vGraph2;
+    this.b = b2;
   }
 
   public EditGraph buildEditGraph() {
     ListMultimap<INormalizedToken, INormalizedToken> matches = matcher.match(vGraph, b);
     // build the decision graph from the matches and the variant graph
-    EditGraph dGraph = new EditGraph(vGraph.getStartVertex());
     Set<EditGraphVertex> lastConstructedVertices = Sets.newLinkedHashSet();
     lastConstructedVertices.add(dGraph.getStartVertex());
     for (INormalizedToken wToken : b.getTokens()) {
@@ -34,14 +39,14 @@ public class EditGraphCreator {
         // Ik moet hier alle aangemaakte vertices in de DGraph opvangen
         Set<EditGraphVertex> newConstructedVertices = Sets.newLinkedHashSet();
         for (INormalizedToken match : matchingTokens) {
-          EditGraphVertex dgVertex = new EditGraphVertex(match);
+          EditGraphVertex dgVertex = new EditGraphVertex(wToken, match);
           dGraph.add(dgVertex);
           newConstructedVertices.add(dgVertex);
           // TODO: you don't want to always draw an edge 
           // TODO: in the case of ngrams in witness and superbase
           // TODO: less edges are needed
           for (EditGraphVertex lastVertex : lastConstructedVertices) {
-            INormalizedToken lastToken = lastVertex.getToken();
+            INormalizedToken lastToken = lastVertex.getBaseToken();
             int gap = vGraph.isNear(lastToken, match) ?  0 : 1;
             dGraph.add(new EditGraphEdge(lastVertex, dgVertex, gap));
           }
@@ -50,7 +55,7 @@ public class EditGraphCreator {
       }
     }
     for (EditGraphVertex lastVertex : lastConstructedVertices) {
-      INormalizedToken lastToken = lastVertex.getToken();
+      INormalizedToken lastToken = lastVertex.getBaseToken();
       int gap = vGraph.isNear(lastToken, vGraph.getEndVertex()) ?  0 : 1;
       dGraph.add(new EditGraphEdge(lastVertex, dGraph.getEndVertex(), gap));
     }
