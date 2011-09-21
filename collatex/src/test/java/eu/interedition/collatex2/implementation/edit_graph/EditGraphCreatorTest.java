@@ -1,44 +1,75 @@
 package eu.interedition.collatex2.implementation.edit_graph;
 
-import static org.mockito.Mockito.*;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import eu.interedition.collatex2.implementation.CollateXEngine;
-import eu.interedition.collatex2.implementation.edit_graph.EditGraph;
-import eu.interedition.collatex2.implementation.edit_graph.EditGraphCreator;
-import eu.interedition.collatex2.implementation.edit_graph.EditGraphEdge;
-import eu.interedition.collatex2.implementation.edit_graph.EditGraphVertex;
-import eu.interedition.collatex2.implementation.edit_graph.VariantGraphMatcher;
+import eu.interedition.collatex2.implementation.containers.witness.FakeWitness;
+import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
 import eu.interedition.collatex2.interfaces.IWitness;
 
 public class EditGraphCreatorTest {
 
-  @Ignore
   @Test
   public void testExample1Mockito() {
-    CollateXEngine engine = new CollateXEngine();
-    IWitness a = engine.createWitness("a", "The red cat and the black cat");
-    IWitness b = engine.createWitness("b", "The red cat and the black cat");
-    IVariantGraph vGraph = engine.graph(a);
-    VariantGraphMatcher matcher = new VariantGraphMatcher();
+//    CollateXEngine engine = new CollateXEngine();
+//    IWitness a = engine.createWitness("a", "The red cat and the black cat");
+//    IWitness b = engine.createWitness("b", "The red cat and the black cat");
+//    IVariantGraph vGraph = engine.graph(a);
+//    VariantGraphMatcher matcher = new VariantGraphMatcher();
     
+    //setup
+    FakeWitness base = new FakeWitness();
+    INormalizedToken bThe = base.add("The");
+    INormalizedToken bRed = base.add("red");
+    INormalizedToken bCat = base.add("cat");
+    INormalizedToken bAnd = base.add("and");
+    INormalizedToken bThe2 = base.add("the");
+    INormalizedToken bBlack = base.add("black");
+    INormalizedToken bCat2 = base.add("cat");
+    
+    FakeWitness witness = new FakeWitness();
+    INormalizedToken wThe = witness.add("The");
+    INormalizedToken wRed = witness.add("red");
+    INormalizedToken wCat = witness.add("cat");
+    INormalizedToken wAnd = witness.add("and");
+    INormalizedToken wThe2 = witness.add("the");
+    INormalizedToken wBlack = witness.add("black");
+    INormalizedToken wCat2 = witness.add("cat");
+ 
     //mock
     EditGraph editGraph = mock(EditGraph.class);
-    EditGraphVertex startVertex = new EditGraphVertex(null, vGraph.getStartVertex());
+    EditGraphVertex startVertex = new EditGraphVertex(null, null); // vGraph.getStartVertex());
     when(editGraph.getStartVertex()).thenReturn(startVertex);
     
     //run
-    EditGraphCreator creator = new EditGraphCreator(editGraph, matcher, vGraph, b);
-    creator.buildEditGraph();
+    EditGraphCreator creator = new EditGraphCreator(editGraph, null, null, null); // matcher, vGraph, b);
+    creator.buildEditGraph(base, witness);
+    
+    //verify
     verify(editGraph).getStartVertex();
+    verify(editGraph).add(new EditGraphVertex(wThe, bThe));
+    verify(editGraph).add(new EditGraphVertex(wThe, bThe2));
+    verify(editGraph).add(new EditGraphVertex(wRed, bRed));
+    verify(editGraph).add(new EditGraphVertex(wCat, bCat));
+    verify(editGraph).add(new EditGraphVertex(wCat, bCat2));
+    verify(editGraph).add(new EditGraphVertex(wAnd, bAnd));
+    verify(editGraph).add(new EditGraphVertex(wThe2, bThe)); // transposition!
+    verify(editGraph).add(new EditGraphVertex(wThe2, bThe2));
+    verify(editGraph).add(new EditGraphVertex(wBlack, bBlack));
+    verify(editGraph).add(new EditGraphVertex(wCat2, bCat)); // transposition!
+    verify(editGraph).add(new EditGraphVertex(wCat2, bCat2));
     verifyNoMoreInteractions(editGraph);
     
+    //TODO: add check for edges!
   }
   
   

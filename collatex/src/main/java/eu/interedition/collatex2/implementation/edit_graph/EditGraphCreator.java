@@ -6,6 +6,8 @@ import java.util.Set;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 
+import eu.interedition.collatex2.implementation.containers.witness.FakeWitness;
+import eu.interedition.collatex2.implementation.matching.TokenMatcher;
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
 import eu.interedition.collatex2.interfaces.IWitness;
@@ -14,7 +16,7 @@ public class EditGraphCreator {
   private final IVariantGraphMatcher matcher;
   private final IVariantGraph vGraph;
   private final IWitness b;
-  private final EditGraph dGraph;
+  private final EditGraph editGraph;
 
   public EditGraphCreator(IVariantGraphMatcher matcher, IVariantGraph vGraph, IWitness b) {
     this(new EditGraph(vGraph.getStartVertex()), matcher, vGraph, b);
@@ -22,7 +24,7 @@ public class EditGraphCreator {
 
   //remove second and third parameter or the first one alone!
   public EditGraphCreator(EditGraph editGraph, IVariantGraphMatcher matcher2, IVariantGraph vGraph2, IWitness b2) {
-    this.dGraph = editGraph;
+    this.editGraph = editGraph;
     this.matcher = matcher2;
     this.vGraph = vGraph2;
     this.b = b2;
@@ -32,7 +34,7 @@ public class EditGraphCreator {
     ListMultimap<INormalizedToken, INormalizedToken> matches = matcher.match(vGraph, b);
     // build the decision graph from the matches and the variant graph
     Set<EditGraphVertex> lastConstructedVertices = Sets.newLinkedHashSet();
-    lastConstructedVertices.add(dGraph.getStartVertex());
+    lastConstructedVertices.add(editGraph.getStartVertex());
     for (INormalizedToken wToken : b.getTokens()) {
       List<INormalizedToken> matchingTokens = matches.get(wToken);
       if (!matchingTokens.isEmpty()) {
@@ -40,7 +42,7 @@ public class EditGraphCreator {
         Set<EditGraphVertex> newConstructedVertices = Sets.newLinkedHashSet();
         for (INormalizedToken match : matchingTokens) {
           EditGraphVertex dgVertex = new EditGraphVertex(wToken, match);
-          dGraph.add(dgVertex);
+          editGraph.add(dgVertex);
           newConstructedVertices.add(dgVertex);
           // TODO: you don't want to always draw an edge 
           // TODO: in the case of ngrams in witness and superbase
@@ -48,7 +50,7 @@ public class EditGraphCreator {
           for (EditGraphVertex lastVertex : lastConstructedVertices) {
             INormalizedToken lastToken = lastVertex.getBaseToken();
             int gap = vGraph.isNear(lastToken, match) ?  0 : 1;
-            dGraph.add(new EditGraphEdge(lastVertex, dgVertex, gap));
+            editGraph.add(new EditGraphEdge(lastVertex, dgVertex, gap));
           }
         }
         lastConstructedVertices = newConstructedVertices;
@@ -57,8 +59,32 @@ public class EditGraphCreator {
     for (EditGraphVertex lastVertex : lastConstructedVertices) {
       INormalizedToken lastToken = lastVertex.getBaseToken();
       int gap = vGraph.isNear(lastToken, vGraph.getEndVertex()) ?  0 : 1;
-      dGraph.add(new EditGraphEdge(lastVertex, dGraph.getEndVertex(), gap));
+      editGraph.add(new EditGraphEdge(lastVertex, editGraph.getEndVertex(), gap));
     }
-    return dGraph;
+    return editGraph;
+  }
+
+  // proberen we het hier nog eens
+  public void buildEditGraph(FakeWitness base, FakeWitness witness) {
+    // we halen hier eerst de matches op
+    TokenMatcher matcher = new TokenMatcher();
+    ListMultimap<INormalizedToken, INormalizedToken> matches = matcher.match(base, witness);
+    // build the decision graph from the matches and the variant graph
+    Set<EditGraphVertex> lastConstructedVertices = Sets.newLinkedHashSet();
+    lastConstructedVertices.add(editGraph.getStartVertex());
+    for (INormalizedToken wToken : witness.getTokens()) {
+      List<INormalizedToken> matchingTokens = matches.get(wToken);
+      if (!matchingTokens.isEmpty()) {
+        // Ik moet hier alle aangemaakte vertices in de EditGraph opvangen
+        Set<EditGraphVertex> newConstructedVertices = Sets.newLinkedHashSet();
+        for (INormalizedToken match : matchingTokens) {
+          EditGraphVertex editGraphVertex = new EditGraphVertex(wToken, match);
+          editGraph.add(editGraphVertex);
+          newConstructedVertices.add(editGraphVertex);
+        }
+        //TODO: add edges!
+        lastConstructedVertices = newConstructedVertices;
+      }
+    }
   }
 }

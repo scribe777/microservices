@@ -34,8 +34,10 @@ import eu.interedition.collatex2.interfaces.IWitness;
 
 public class Witness implements Iterable<INormalizedToken>, IWitness {
   private String sigil;
-  private List<INormalizedToken> tokens;
+  protected List<INormalizedToken> tokens;
 
+  //TODO: warning: why is this constructor here?
+  //TODO: it does not initialize the fields properly!
   public Witness() {}
 
   public Witness(final String sigil, final List<INormalizedToken> tokens) {
