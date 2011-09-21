@@ -26,7 +26,7 @@ public class EditGraphCreatorTest {
 //    IVariantGraph vGraph = engine.graph(a);
 //    VariantGraphMatcher matcher = new VariantGraphMatcher();
     
-    //setup
+    //setup witnesses
     FakeWitness base = new FakeWitness();
     INormalizedToken bThe = base.add("The");
     INormalizedToken bRed = base.add("red");
@@ -45,31 +45,48 @@ public class EditGraphCreatorTest {
     INormalizedToken wBlack = witness.add("black");
     INormalizedToken wCat2 = witness.add("cat");
  
+    //setup vertices
+    EditGraphVertex startVertex = new EditGraphVertex(null, null); // vGraph.getStartVertex());
+    EditGraphVertex vertex1 = new EditGraphVertex(wThe, bThe);
+    EditGraphVertex vertex2 = new EditGraphVertex(wThe, bThe2);
+    EditGraphVertex vertex3 = new EditGraphVertex(wRed, bRed);
+    EditGraphVertex vertex4 = new EditGraphVertex(wCat, bCat);
+    EditGraphVertex vertex5 = new EditGraphVertex(wCat, bCat2);
+    EditGraphVertex vertex6 = new EditGraphVertex(wAnd, bAnd);
+    EditGraphVertex vertex7 = new EditGraphVertex(wThe2, bThe);
+    EditGraphVertex vertex8 = new EditGraphVertex(wThe2, bThe2);
+    EditGraphVertex vertex9 = new EditGraphVertex(wBlack, bBlack);
+    EditGraphVertex vertex10 = new EditGraphVertex(wCat2, bCat);
+    EditGraphVertex vertex11 = new EditGraphVertex(wCat2, bCat2);
+    
+    
     //mock
     EditGraph editGraph = mock(EditGraph.class);
-    EditGraphVertex startVertex = new EditGraphVertex(null, null); // vGraph.getStartVertex());
     when(editGraph.getStartVertex()).thenReturn(startVertex);
     
     //run
     EditGraphCreator creator = new EditGraphCreator(editGraph, null, null, null); // matcher, vGraph, b);
     creator.buildEditGraph(base, witness);
     
-    //verify
+    //verify vertices
     verify(editGraph).getStartVertex();
-    verify(editGraph).add(new EditGraphVertex(wThe, bThe));
-    verify(editGraph).add(new EditGraphVertex(wThe, bThe2));
-    verify(editGraph).add(new EditGraphVertex(wRed, bRed));
-    verify(editGraph).add(new EditGraphVertex(wCat, bCat));
-    verify(editGraph).add(new EditGraphVertex(wCat, bCat2));
-    verify(editGraph).add(new EditGraphVertex(wAnd, bAnd));
-    verify(editGraph).add(new EditGraphVertex(wThe2, bThe)); // transposition!
-    verify(editGraph).add(new EditGraphVertex(wThe2, bThe2));
-    verify(editGraph).add(new EditGraphVertex(wBlack, bBlack));
-    verify(editGraph).add(new EditGraphVertex(wCat2, bCat)); // transposition!
-    verify(editGraph).add(new EditGraphVertex(wCat2, bCat2));
-    verifyNoMoreInteractions(editGraph);
+    verify(editGraph).add(vertex1);
+    verify(editGraph).add(vertex2);
+    verify(editGraph).add(vertex3);
+    verify(editGraph).add(vertex4);
+    verify(editGraph).add(vertex5);
+    verify(editGraph).add(vertex6);
+    verify(editGraph).add(vertex7); // transposition!
+    verify(editGraph).add(vertex8);
+    verify(editGraph).add(vertex9);
+    verify(editGraph).add(vertex10); // transposition!
+    verify(editGraph).add(vertex11);
     
-    //TODO: add check for edges!
+    //verify edges
+    //TODO: add checks for edges!
+    //verify(editGraph).add(new EditGraphEdge(startVertex, vertex1, 0));
+    
+    verifyNoMoreInteractions(editGraph);
   }
   
   
