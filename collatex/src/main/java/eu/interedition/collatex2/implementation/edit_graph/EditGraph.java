@@ -21,10 +21,10 @@ public class EditGraph extends DirectedAcyclicGraph<EditGraphVertex, EditGraphEd
   }
 
   public EditGraph(EditGraphVertex startVertex, EditGraphVertex endVertex) {
-	super(EditGraphEdge.class);
-	this.v1 = startVertex;
-	this.end = endVertex;
-	add(startVertex, endVertex);
+  	super(EditGraphEdge.class);
+  	this.v1 = startVertex;
+  	this.end = endVertex;
+  	add(startVertex, endVertex);
   }
 
   public void add(EditGraphVertex... vertices) {
@@ -35,7 +35,7 @@ public class EditGraph extends DirectedAcyclicGraph<EditGraphVertex, EditGraphEd
 
   public void add(EditGraphEdge... edges) {
     for (EditGraphEdge e : edges) {
-      addEdge(e.getBeginVertex(), e.getTargetVertex(), e);
+      addEdge(e.getSourceVertex(), e.getTargetVertex(), e);
     }
   }
 
