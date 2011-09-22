@@ -7,6 +7,7 @@ import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Sets;
 
 import eu.interedition.collatex2.implementation.containers.witness.FakeWitness;
+import eu.interedition.collatex2.implementation.matching.IVariantGraphMatcher;
 import eu.interedition.collatex2.implementation.matching.TokenMatcher;
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 import eu.interedition.collatex2.interfaces.IVariantGraph;
