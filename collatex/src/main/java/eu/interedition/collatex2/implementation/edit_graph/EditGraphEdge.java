@@ -1,5 +1,7 @@
 package eu.interedition.collatex2.implementation.edit_graph;
 
+import com.google.common.base.Objects;
+
 //This class represents edges in the EditGraph
 //This class is implemented as an immutable value object
 //private fields are final
@@ -35,10 +37,7 @@ public class EditGraphEdge {
   
   @Override
   public int hashCode() {
-    int hc = super.hashCode();
-    hc = hc * 59 + sourceVertex.hashCode();
-    hc = hc * 59 + targetVertex.hashCode();
-    hc = hc * 59 + weight;
+    int hc = Objects.hashCode(sourceVertex, targetVertex, weight);
 //    System.out.println("hashcode called on: "+this.toString()+":"+hc);
     return hc;
   }
@@ -46,12 +45,14 @@ public class EditGraphEdge {
   @Override
   public boolean equals(final Object obj) {
     //System.out.println(this.toString()+" comparing with "+obj.toString());
-    if ((obj != null) && (obj instanceof EditGraphEdge)) {
+    if (this==obj) {
+      return true;
+    }
+    if (obj instanceof EditGraphEdge) {
       final EditGraphEdge edge = (EditGraphEdge) obj;
-      boolean result = true;
-      result = result && sourceVertex.equals(edge.sourceVertex);
-      result = result && targetVertex.equals(edge.targetVertex);
-      //System.out.println("result: "+result);
+      boolean result = Objects.equal(sourceVertex, edge.sourceVertex); 
+      result = result && Objects.equal(targetVertex, edge.targetVertex);
+      result = result && Objects.equal(weight, edge.weight);
       return result;
     }
     return false;

@@ -1,5 +1,7 @@
 package eu.interedition.collatex2.implementation.edit_graph;
 
+import com.google.common.base.Objects;
+
 import eu.interedition.collatex2.interfaces.INormalizedToken;
 
 // This class represents vertices in the EditGraph
@@ -29,16 +31,7 @@ public class EditGraphVertex {
   
   @Override
   public int hashCode() {
-    int hc = super.hashCode();
-    //TODO: Should it be possible that baseToken is null
-    //TODO: it has to do with the start and end tokens who are special
-    //TODO: at the moment
-    if (baseToken!=null) {
-      hc = hc * 59 + baseToken.hashCode();
-    }
-    if (witnessToken!=null) {
-      hc = hc * 59 + witnessToken.hashCode();
-    }
+    int hc = Objects.hashCode(baseToken, witnessToken);
 //    System.out.println("hashcode called on: "+this.toString()+":"+hc);
     return hc;
   }
@@ -46,19 +39,13 @@ public class EditGraphVertex {
   @Override
   public boolean equals(final Object obj) {
     //System.out.println(this.toString()+" comparing with "+obj.toString());
-    if ((obj != null) && (obj instanceof EditGraphVertex)) {
+    if (this==obj) {
+      return true;
+    }
+    if (obj instanceof EditGraphVertex) {
       final EditGraphVertex vertex = (EditGraphVertex) obj;
-      boolean result = true;
-      //TODO: Should it be possible that baseToken is null
-      //TODO: it has to do with the start and end tokens who are special
-      //TODO: at the moment
-      if (baseToken!=null) {
-        result = result && baseToken.equals(vertex.baseToken);
-      }
-      if (witnessToken!=null) {
-        result = result && witnessToken.equals(vertex.witnessToken);
-      }
-      //System.out.println("result: "+result);
+      boolean result = Objects.equal(baseToken, vertex.baseToken);
+      result = result && Objects.equal(witnessToken, vertex.witnessToken);
       return result;
     }
     return false;
