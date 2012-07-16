@@ -38,8 +38,9 @@ public class SimpleWitness implements Iterable<Token>, Witness {
   public static final Function<String, String> TOKEN_NORMALIZER = new Function<String, String>() {
     @Override
     public String apply(String input) {
-      final String normalized = PUNCT.matcher(input.trim().toLowerCase()).replaceAll("");
-      return (normalized == null || normalized.length() == 0 ? input : normalized);
+	return input;
+//      final String normalized = PUNCT.matcher(input.trim().toLowerCase()).replaceAll("");
+//      return (normalized == null || normalized.length() == 0 ? input : normalized);
     }
   };
 

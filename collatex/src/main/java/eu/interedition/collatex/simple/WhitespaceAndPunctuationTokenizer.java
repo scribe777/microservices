@@ -11,9 +11,27 @@ public class WhitespaceAndPunctuationTokenizer implements Function<String, List<
   @Override
   public List<String> apply(String input) {
     final List<String> tokens = Lists.newArrayList();
-    final StringTokenizer tokenizer = new StringTokenizer(input.trim(), " ,.-()?;:\n", true);
+    final StringTokenizer tokenizer = new StringTokenizer(input.trim(), " ,.-?;:\n", true);
+    boolean inApp = false;
+    String appToken = "";
     while (tokenizer.hasMoreTokens()) {
-      final String token = tokenizer.nextToken().trim();
+      String token = tokenizer.nextToken();
+      if (inApp) {
+        if (token.indexOf("}") > -1) {
+          token = appToken + token;
+          inApp = false;
+        }
+        else {
+          appToken += token;
+          continue;
+        }
+      }
+      else if (token.indexOf("{") > -1) {
+        appToken = token;
+        inApp = true;
+        continue;
+      }
+      token = token.trim();
       if (token.length() > 0) {
         tokens.add(token);
       }
