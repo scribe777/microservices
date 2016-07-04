@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 import java.util.StringTokenizer;
+import java.util.regex.Pattern;
 
 public class WhitespaceAndPunctuationTokenizer implements Function<String, List<String>> {
 
@@ -12,23 +13,23 @@ public class WhitespaceAndPunctuationTokenizer implements Function<String, List<
   public List<String> apply(String input) {
     final List<String> tokens = Lists.newArrayList();
     final StringTokenizer tokenizer = new StringTokenizer(input.trim(), " ,.-?;:\n", true);
-    boolean inApp = false;
-    String appToken = "";
+    boolean inSeg = false;
+    String segToken = "";
     while (tokenizer.hasMoreTokens()) {
       String token = tokenizer.nextToken();
-      if (inApp) {
-        if (token.indexOf("}") > -1) {
-          token = appToken + token;
-          inApp = false;
+      if (inSeg) {
+        if (token.indexOf("))") > -1) {
+          token = segToken + token.replaceFirst(Pattern.quote("))"), "");
+          inSeg = false;
         }
         else {
-          appToken += token;
+          segToken += token;
           continue;
         }
       }
-      else if (token.indexOf("{") > -1) {
-        appToken = token;
-        inApp = true;
+      else if (token.indexOf("((") > -1) {
+        segToken = token.replaceFirst(Pattern.quote("(("), "");
+        inSeg = true;
         continue;
       }
       token = token.trim();

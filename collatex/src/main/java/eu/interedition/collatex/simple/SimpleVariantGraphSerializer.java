@@ -332,10 +332,6 @@ System.out.println(retVal);
     return retVal;
   }
 
-  private String toLabel(VariantGraphVertex v) {
-    return VariantGraphVertex.TO_CONTENTS.apply(v).replaceAll("\"", "\\\"");
-  }
-
   public void toDot(Writer writer) {
     try {
       final PrintWriter out = new PrintWriter(writer);
@@ -488,9 +484,6 @@ System.out.println(retVal);
     }
   }
 
-  private String toLabel(VariantGraphEdge e) {
-    return VariantGraphEdge.TO_CONTENTS.apply(e).replaceAll("\"", "\\\"");
-  }
 
   private String toLabel(VariantGraphVertex v) {
     return VariantGraphVertex.TO_CONTENTS.apply(v).replaceAll("\"", "\\\"");
